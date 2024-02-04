@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoriteMovieController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -22,4 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::Resource('users', UserController::class);
 
-Route::get('movies', [MovieController::class,'index']);
+
+Route::group(['namespace' => 'Movies', 'prefix' => 'movies'], function () {
+    Route::get('/', [MovieController::class, 'index']);
+    Route::post('/favorites/{movie}/{user}', [FavoriteMovieController::class, 'addToFavorites']);
+    Route::delete('/favorites/{movie}/{user}', [FavoriteMovieController::class, 'removeFromFavorites']);
+    Route::get('/not-favorites/{user}', [FavoriteMovieController::class, 'notFavorites']);
+    });

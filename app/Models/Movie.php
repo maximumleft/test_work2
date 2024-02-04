@@ -12,4 +12,9 @@ class Movie extends Model
     public $timestamps = false;
     protected $guarded = false;
 
+    public function favoriteUsers()
+    {
+        return $this->belongsToMany(User::class, 'movie_users');
+    }
+
 }
