@@ -6,39 +6,35 @@ use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\User\Resource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     public function index(): ResourceCollection
     {
         return Resource::collection(User::all());
     }
 
-    public function show(): Resource
+    public function show(Request $request): Resource
     {
-        return new Resource(auth()->user());
+        return new Resource($this->userService->getUser($request));
     }
 
     public function store(StoreRequest $request): Resource
     {
-        $user = User::create($request->validated());
-        auth()->login($user);
-
-        return new Resource($user);
+        return new Resource(User::create($request->validated()));
     }
 
-    public function update(UpdateRequest $request,User $user): Resource
+    public function update(Request $req,UpdateRequest $request): Resource
     {
-        $user->update($request->validated());
-
-        return new Resource($user);
+        return new Resource($this->userService->updateUser($req,$request));
     }
 
-    public function destroy(User $user): Response
+    public function destroy(Request $request): Response
     {
-        $user->delete();
+        $this->userService->getUser($request)->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

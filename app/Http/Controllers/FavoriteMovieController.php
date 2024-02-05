@@ -12,17 +12,20 @@ class FavoriteMovieController extends Controller
 {
     public function addToFavorites(Movie $movie, User $user)
     {
-        $favorite = MovieUser::firstOrCreate([
+
+        dd(auth()->user());
+        MovieUser::firstOrCreate([
             'user_id' => $user->id,
             'movie_id' => $movie->id
         ]);
+
 
         return response()->json(['message' => 'Movie added to favorites']);
     }
 
     public function removeFromFavorites(Movie $movie, User $user)
     {
-        $favorite = MovieUser::where('user_id', $user->id)
+        MovieUser::where('user_id', $user->id)
             ->where('movie_id', $movie->id)
             ->delete();
 
@@ -48,7 +51,7 @@ class FavoriteMovieController extends Controller
             $notFavorite = $allFilms->diff($favoriteFilms);
             return $notFavorite;
         } else
-            return response(['error' => 'INTERNAL_ERROR'],500);
+            return response(['error' => 'INTERNAL_ERROR'], 500);
 
     }
 }
