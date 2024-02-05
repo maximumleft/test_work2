@@ -9,7 +9,7 @@ class BaseController extends Controller
     public $movieService;
     public $userService;
 
-    public function __construct(Service $userService, Service $movieService)
+    public function __construct(Service $userService, \App\Services\Movie\Service $movieService)
     {
         $this->movieService = $movieService;
         $this->userService = $userService;

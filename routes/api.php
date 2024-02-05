@@ -26,7 +26,7 @@ Route::Resource('users', UserController::class);
 
 Route::group(['namespace' => 'Movies', 'prefix' => 'movies'], function () {
     Route::get('/', [MovieController::class, 'index']);
-    Route::post('/favorites/{movie}/{user}', [FavoriteMovieController::class, 'addToFavorites']);
-    Route::delete('/favorites/{movie}/{user}', [FavoriteMovieController::class, 'removeFromFavorites']);
+    Route::post('/favorites/{movie}', [FavoriteMovieController::class, 'addToFavorites']);
+    Route::delete('/favorites/{movie}', [FavoriteMovieController::class, 'removeFromFavorites']);
     Route::get('/not-favorites/{user}', [FavoriteMovieController::class, 'notFavorites']);
     });
